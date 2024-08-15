@@ -8,6 +8,7 @@
 - Add an Address for each student
 - Print out all students along with their addresses using a join()
 """
+from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 
 from connect_db import session, db
@@ -61,3 +62,15 @@ print('-'*80)
 rows_Brno_sorted = rows_Brno.order_by(Student.last_name)
 for student, address in rows_Brno_sorted:
     print(f"{student}: {address}")
+
+print('-'*80)
+print("Student Adam Bernau moved to street 'Vedlejší'")
+students = session.query(Student, Address).join(Address).filter(and_(Student.first_name == "Adam", Student.last_name == "Bernau"))
+for student, address in students:
+    print(f"{student} {address}")
+student, address = students[0]
+print(student, address)
+address.street_name = "Vedlejší"
+session.commit()
+student, address = students[0]
+print(student, address)
