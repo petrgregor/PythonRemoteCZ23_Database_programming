@@ -85,3 +85,9 @@ myquery = {"surname": {"$not": {"$exists": "true"}}}
 customers = mycol.find(myquery, {"_id": 0}).sort("name").sort("surname")
 for customer in customers:
     print(customer)
+
+print("-"*80)
+print("First 3 customers")
+customers = mycol.find().sort("surname").limit(3)
+for customer in customers:
+    print(customer)
